@@ -1,0 +1,73 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 40px auto;
+    background-image: url('/static/image0.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff;
+    position: relative;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+  h1 {
+    color: #4a90e2;
+    text-align: center;
+  }
+  form {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  input[type="file"] {
+    margin-bottom: 10px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    background: rgba(255, 255, 255, 0.9);
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    color: #333; /* make text inside li dark */
+  }
+  audio {
+    width: 100%;
+    margin-top: 10px;
+    outline: none;
+  }
+</style>
+</head>
+<body>
+  <h1>🎵 Music Player</h1>
+
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".mp3" required><br>
+    <input type="submit" value="Upload">
+  </form>
+
+  <h2>Uploaded Songs</h2>
+  <ul>
+    {% for song in songs %}
+    <li>
+      {{ song }}
+      <audio controls>
+        <source src="/music/{{ song }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </li>
+    {% else %}
+    <li>No songs uploaded yet.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: music-player
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: music-player
+  template:
+    metadata:
+      labels:
+        app: music-player
+    spec:
+      containers:
+      - name: music-player
+        image: stukovalexis/musictest:latest
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: /music
+          name: music-storage
+      volumes:
+      - name: music-storage
+        persistentVolumeClaim:
+          claimName: music-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: music-service
+spec:
+  selector:
+    app: music-player
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
